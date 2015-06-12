@@ -1,0 +1,24 @@
+{
+  "name": "routes-builder",
+  "version": "0.0.1",
+  "description": "routes-builder is a platform agnostic, structure agnostic way to setup your routes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "routes-builder": "./bin/routes-builder-gen.js"
+  },
+  "author": "Mark Smith",
+  "license": "",
+  "dependencies": {
+    "async": "^1.2.1",
+    "debug": "^2.2.0",
+    "express": "^4.12.4",
+    "git-clone": "^0.1.0",
+    "minimist": "^1.1.1",
+    "mu2": "^0.5.20",
+    "readdir": "0.0.13",
+    "sprintf-js": "^1.0.2"
+  }
+}

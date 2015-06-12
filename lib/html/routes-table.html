@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>Routes Table</title>
+  <style type="text/css">
+    body {
+      font : 10pt 'Trebuchet MS', Verdana, Helvetica, Arial, sans-serif;
+      color            : #444;
+      background-color : #888;
+    }
+
+    .rt-main {
+      position : absolute;
+      top: 25px;
+      left: 25px;
+      right: 0px;
+      background: #ddd;
+      border: 4px;
+      width: auto;
+      padding-left: 16px;
+      padding-bottom: 16px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+<div class="rt-main">
+  <div class="rt-main-routes">
+    <h1>Routes Table</h1>
+    <table>
+      <tbody>
+      <tr>
+        <th>Group</th>
+        <th>App Level Middleware</th>
+        <th>HTTP Method</th>
+        <th>URL</th>
+        <th>Handler</th>
+        <th>Route Level Middleware</th>
+      </tr>
+      {{#routes}}
+      <tr>
+        <td>{{group}}</td>
+        <td>TODO</td>
+        <td>{{method}}</td>
+        <td>
+          {{#path}}
+          <a href="http://{{host}}:{{port}}{{path}}">{{path}}</a>
+          {{/path}}
+        </td>
+        <td>{{handler}}</td>
+        <td>{{middleware}}</td>
+      </tr>
+      {{/routes}}
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>
