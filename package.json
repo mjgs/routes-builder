@@ -24,5 +24,18 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/mjgs/routes-builder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mjgs/routes-builder/issues"
+  },
+  "keywords": [
+    "express",
+    "routes",
+    "setup",
+    "configuration"
+  ],
+  "readmeFilename": "Readme.md",
+  "engines": {
+    "node": "*"
   }
 }
