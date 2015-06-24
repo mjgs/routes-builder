@@ -256,7 +256,7 @@ configMap.__dirname          = __dirname;
 configMap.routes_builder_dir = path.join(__dirname, '..');
 configMap.demo_proj_name     = 'routes-builder-demo-project';
 configMap.demo_proj_path     = path.join(configMap.routes_builder_dir, '..', configMap.demo_proj_name);
-configMap.demo_proj_git_path = '/Users/marksmith/codes/routes-builder/routes-builder-demo-project';
+configMap.demo_proj_git_path = 'https://github.com/mjgs/routes-builder-demo-project.git';
 
 (configMap.env === 'development') ?
   configMap.demo_proj_install_name = configMap.demo_proj_path :
