@@ -35,7 +35,7 @@
     "configuration"
   ],
   "readmeFilename": "Readme.md",
-  "engines": {
-    "node": "*"
+  "engines" : {
+    "node" : ">=0.10.26 <=0.12.2"
   }
 }
