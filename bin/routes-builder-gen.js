@@ -111,6 +111,7 @@ _drawProjectDescription = function(proj) {
   console.log('');
   console.log('Next steps:');
   console.log('  \033[36m$ cd ' + proj + ' && npm install\033[39m (install dependencies)');
+  console.log('  \033[36m$ export NODE_ENV=development DEBUG=routes-builder:*\033[39m (export environment variables)');
   console.log('  \033[36m$ npm start\033[39m (run the app)');
   console.log('');
 };
