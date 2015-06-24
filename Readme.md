@@ -82,16 +82,12 @@
   Route definition files are simple javascript objects:
     
     module.exports = {
-    
       prefix: '/some/path/on/the/site',
-    
       default_middleware: [ 'middleware.middleware1', 'middleware.middleware2' ],
-    
       routes: [
         [ 'get' , '/landing-page',   [ 'middleware.middleware3', 'middleware.middleware4' ],  'landing-page.mainPage' ]
         ...
       ]
-    
     };
 
   You define the routes at the same time as the middleware that will run when the route is requested. Add as many routes
