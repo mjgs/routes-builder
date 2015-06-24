@@ -1,6 +1,6 @@
 {
   "name": "routes-builder",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "routes-builder is a platform agnostic, structure agnostic way to setup your routes",
   "main": "index.js",
   "scripts": {
