@@ -15,6 +15,8 @@
   * Flexible structure where you can use any folder naming and positioning you like
   * Simple command line tool to create new projects
   * Defaults to using Express but you can write your own route definition and build functions
+  
+  ![alt tag](https://raw.githubusercontent.com/mjgs/routes-builder/master/lib/routes-table.jpg)
 
 ## Install
 
