@@ -26,7 +26,7 @@
 
   Then create a new project:
 
-    $ routes-builder myNewProject
+    $ routes-builder -p myNewProject
 
     Created new project:
 
