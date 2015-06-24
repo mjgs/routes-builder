@@ -197,10 +197,12 @@
   (1) route-definition function runs  (./lib/route-definitions)
   (2) route-build function runs       (./lib/route-builds)
   
-  If you want to create your own then add them to the above folders and specify them without the .js like so:
+  If you want to create your own then add them to the above folders and specify them as options 
+  without the .js in the filename like so:
   
     var anotherWebServer = require('anotherWebServer');
-    var app = routes_builder(anotherWebServer(), 'myFancyRoutes.definition', 'myDeploymentServer.build');  
+    var options = { route_definition: 'myFancyRoutes.definition', route_build: 'myDeploymentServer.build' } 
+    var app = routes_builder(anotherWebServer(), options);  
 
   The route-definition function can pass data to the route-build function, the default routes 
   definition function uses a folder structure and route files to define the routes, but you could 
@@ -226,6 +228,42 @@
   quickly, it's simple enough that you don't get confused by too many layers,
   and you'll learn techniques and patterns that are useful for Node.js app
   development.  
+  
+## Single file apps
+
+  For small apps it's convenient to be able to have all the pieces of the app in the same app.js file
+  rather than spread out in different folders. You can specify any/all of the routes, middleware
+  and handlers in a javascript object and pass that in the options object like so:
+  
+    var options = {
+      routes: {
+        'landing-pages': {
+          prefix: '/landing-pages',
+          default_middleware: [ 'middleware.middleware1', 'middleware.middleware2' ],
+          routes: [
+            [ 'get' , '/first-page',   [ 'middleware.middleware3', 'middleware.middleware4' ],  'handlers.first_handler'  ],
+            [ 'get' , '/second-page',  [ 'middleware.middleware3', 'middleware.middleware4' ],  'handlers.second_handler' ]
+          ]
+        }
+      },
+      middleware: {
+        'middleware': {
+          middleware1: function (req, res, next) { console.log("This is middleware1"); next(); },
+          middleware2: function (req, res, next) { console.log("This is middleware2"); next(); },
+          middleware3: function (req, res, next) { console.log("This is middleware3"); next(); },
+          middleware4: function (req, res, next) { console.log("This is middleware4"); next(); }
+        }
+      },
+      handlers: {
+        'handlers': {
+          first_handler: function (req, res) { console.log('This is the first-page handler'); return res.send('This is the first-page handler'); },
+          second_handler: function (req, res) { console.log('This is the second-page handler'); return res.send('This is the second-page handler'); }
+        }
+      }
+    };
+    
+    var app = routes_builder(express(), options);  
+
 
 ## Possible additions
 
@@ -233,6 +271,5 @@
   * Route table shows application level middleware
   * Sort route table by column
   * Re-load of assets without stop/starting app
-  * Single file mini apps - app, handlers, middleware and routes all in same file
   * Write some example definition and build functions for other architectures
   * Write some unit tests                                                                                         
