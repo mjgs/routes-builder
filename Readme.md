@@ -227,6 +227,13 @@
   and you'll learn techniques and patterns that are useful for Node.js app
   development.  
   
+## Specifying different folder names
+  
+  If you want to use different names than the defaults then pass them in the options:
+  
+    var options = { routes: 'paths', middleware: 'middlewares', handlers: 'controllers' } 
+    var app = routes_builder(express(), options);
+  
 ## Single file apps
 
   For small apps it's convenient to be able to have all the pieces of the app in the same app.js file
