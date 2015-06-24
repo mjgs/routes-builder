@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// Module: create-express-routes.js
+// Module: routes-builder-gen.js
 //
 // Command line tool to generate a routes-builder based project
 //
