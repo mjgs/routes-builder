@@ -1,6 +1,6 @@
 {
   "name": "routes-builder",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "routes-builder is a platform agnostic, structure agnostic way to setup your routes",
   "main": "index.js",
   "scripts": {
@@ -20,5 +20,9 @@
     "mu2": "^0.5.20",
     "readdir": "0.0.13",
     "sprintf-js": "^1.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mjgs/routes-builder.git"
   }
 }
