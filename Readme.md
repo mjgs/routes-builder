@@ -192,7 +192,9 @@
     var app = routes_builder(express());
     
   That's where everything gets setup, and it happens in two steps:
+  
   (1) route-definition function runs  (./lib/route-definitions)
+  
   (2) route-build function runs       (./lib/route-builds)
   
   If you want to create your own then add them to the above folders and specify them as options 
@@ -202,6 +204,7 @@
     var options = { route_definition: 'myFancyRoutes.definition', route_build: 'myDeploymentServer.build' } 
     var app = routes_builder(anotherWebServer(), options);  
 
+  
   The route-definition function can pass data to the route-build function, the default routes 
   definition function uses a folder structure and route files to define the routes, but you could 
   create the routes by loading them from a database if you wanted to. The default route build 
