@@ -1,7 +1,16 @@
 language: node_js
 node_js:
-  - "0.12"
-  - "0.11"
-  - "0.10"
+- '0.12'
+- '0.11'
+- '0.10'
 install:
-  - npm install
+- npm install
+deploy:
+  provider: npm
+  email: markjgsmith@gmail.com
+  api_key:
+    secure: c+dACU5Yq1Mw0s6/AZ1gR+HkXVok7/jogJIY5y2Rh3aEmbuBKQukgvbKV2pe677eIzhKw0R/A2K96KhmreW+AKomgkrQmvuFsL8gUjr457UaBDHy1ykZzqeR+rGwN8iryIaseIlYHdzozADHthn7A2sB+SHttKyB0qZ7aRKNkliur4u424MkqnlGWAAS50YFxciTJNQt82cJF5L2+SEeXZTPrfEKsbNGx69LowHHt7RZrwuxK+JRQXRpcnY3pqeU9Fezu8XFRJvLL2+Kz4tXXAJlkvT4HzUc1w284o1xLoDGu2YbQ83PtktlB1ZZXEGD83qIGAHAHUlu0B6cuLvQtu1XhE8agO1rdJuImI4F/wZPN4G+4Hjwuby/bD8BWcb0H7tm/vsiSpkOeCnT6VTS9jd1rCTEysCNJlCfUCtB2xrJwFSsnsNUIG+OheQCgLmeKwLAimiPpUB/GpHjEmESuC37PFwdmSzc+12qb7rGWUiVDkEJ60oT+pKkaLAuMTxxbC1tEu7/V3GbkVFXc31JfyQO0A0cnH3zXZ/rIE9fLaEZmfbTvfmqgYAZIcjnTmY3qiTWVZLzyrV7phrVChhadLT8yYmKzAYtfeQ27WuPWcVKhLtvFUp8t5XHHx23cnm2DleIgJDmbtSmujH9OUZZYAc/AwkGFxRkWECKCf7T7Kg=
+  on:
+    tags: true
+    repo: mjgs/routes-builder
+    branch: master
