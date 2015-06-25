@@ -1,7 +1,7 @@
 {
   "name": "routes-builder",
-  "version": "0.0.11",
-  "description": "routes-builder is a platform agnostic, structure agnostic way to setup your routes",
+  "version": "0.0.12",
+  "description": "Set up routes, middleware and handlers by droping them in a folder, view routes using the route table viewer",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
