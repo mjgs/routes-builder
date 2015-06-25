@@ -1,9 +1,6 @@
 # Routes-Builder
 
-  Node.js module for route auto-creation, per-route middleware, and a development route table viewer.
-
-## Description
-
+  Node.js module for route auto-creation, per-route middleware, and a development route table viewer. 
   Route-Builder automatically sets up routes, middleware and handlers that you simply drop in.
 
 ## Features
@@ -15,10 +12,22 @@
   * Flexible structure where you can use any folder naming and positioning you like
   * Simple command line tool to create new projects
   * Defaults to using Express but you can write your own route definition and build functions
+    
+## Getting started
   
-  ![alt tag](https://raw.githubusercontent.com/mjgs/routes-builder/master/lib/routes-table.jpg)
+    var express = require('express');
+    var routes-builder = require('routes_builder');
+    var app = routes_builder(express());
+    
+  If you need to do some more setup once the routes have been created, listen for the 'setup-complete' event:
+     
+    app.routes_builder.on('setup-complete', function(app) {
+      // setup error handlers
+    });   
+      
+  The best way to get started is to install the command line tool.
 
-## Install
+## Installing the command line tool
 
   To install routes-builder globally use npm:
 
@@ -77,8 +86,6 @@
     |       /     -->  middleware1 --> middleware2 ... -->  homepage.mainPage  |
      --------------------------------------------------------------------------
 
-## Discussion
-
   The general idea is that you define the routes separate from the code that handles the route request. 
   
   Route definition files are simple javascript objects:
@@ -97,12 +104,7 @@
   
   A route table is created so you can easily view the routes during development by browsing to http://localhost/route-table:
 
-    Route Table
-
-    Group          Method                  URL                               Handler                                                      Middleware
-    homepage        get    /                                    homepage.mainPage                   middleware.middleware1,middleware.middleware2,middleware.middleware3,middleware.middleware4
-    landing-page    get    /some/path/on/the/site/landing-page  landing-page.mainPage               middleware.middleware1,middleware.middleware2,middleware.middleware3,middleware.middleware4
-    #routes-table#  get    /routes-table                        #routes-table#._generateRouteTable
+  ![alt tag](https://raw.githubusercontent.com/mjgs/routes-builder/master/lib/routes-table.jpg)
 
   The grouping is useful for feature development, all routes in the same route file will have that as the group name.
   
@@ -185,7 +187,7 @@
       'destroy': function ( req, res ) { res.send( 'This is the users.destroy handler' ); }
     };
   
-## Writing your own route definition and build functions
+## Writing your own route definition and route build functions
 
   If you look in app.js you'll see the line:
   
