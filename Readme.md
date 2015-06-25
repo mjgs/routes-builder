@@ -16,7 +16,7 @@
 ## Getting started
   
     var express = require('express');
-    var routes-builder = require('routes_builder');
+    var routes_builder = require('routes_builder');
     var app = routes_builder(express());
     
   If you need to do some more setup once the routes have been created, listen for the 'setup-complete' event:
