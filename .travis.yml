@@ -3,6 +3,8 @@ node_js:
 - '0.12'
 - '0.11'
 - '0.10'
+before_install:
+- npm install -g npm@'>=2.7.4'
 install:
 - npm install
 deploy:
@@ -15,4 +17,3 @@ deploy:
     repo: mjgs/routes-builder
     branch: master
     node: '0.12'
-
