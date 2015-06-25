@@ -4,7 +4,7 @@
   "description": "Set up routes, middleware and handlers by droping them in a folder, view routes using the route table viewer",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/*.js"
   },
   "bin": {
     "routes-builder": "./bin/routes-builder-gen.js"
@@ -35,7 +35,10 @@
     "configuration"
   ],
   "readmeFilename": "Readme.md",
-  "engines" : {
-    "node" : ">=0.10.26 <=0.12.2"
+  "engines": {
+    "node": ">=0.10.26 <=0.12.2"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.5"
   }
 }
