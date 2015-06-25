@@ -81,7 +81,7 @@
   You define the routes at the same time as the middleware that will run when the route is requested. Add as many routes
   in a definition file as you want.
   
-  A route table is created so you can easily view the routes during development by browsing to http://localhost/routes-table:
+  A route table is created so you can easily view the routes during development by browsing to http://localhost:3000/routes-table:
 
   ![alt tag](https://raw.githubusercontent.com/mjgs/routes-builder/master/lib/routes-table.jpg)
 
