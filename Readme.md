@@ -189,7 +189,7 @@
   function creates routes for Express, but you could create your own function to create them 
   for any other web server.
   
-  If you want the development route table viewer then add these lines to the definition function:
+  If you want the development route table viewer then look at these lines from the default definition function:
   
     if (process.env.NODE_ENV === 'development') {
       routes_map = routes_table.addRouteTable(routes_map, '/', '/routes-table');
