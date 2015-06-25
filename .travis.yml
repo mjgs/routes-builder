@@ -14,3 +14,5 @@ deploy:
     tags: true
     repo: mjgs/routes-builder
     branch: master
+    node: '0.12'
+
