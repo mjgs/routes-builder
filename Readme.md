@@ -54,29 +54,8 @@
 
     Next steps:
       $ cd myNewProject && npm install (install dependencies)
+      $ export NODE_ENV=development DEBUG=routes-builder:* (export environment variables)
       $ npm start (or if you prefer node app.js)
-
-## File Structure
-
-    .
-    ├── app.js
-    ├── handlers
-    │   ├── homepage.js
-    │   └── landing-page.js
-    ├── lib
-    ├── middleware
-    │   └── middleware.js
-    ├── node_modules
-    ├── package.json
-    ├── public
-    ├── routes
-    │   ├── homepage.js
-    │   └── landing-page.js
-    ├── test
-    └── views
-        ├── homepage.ejs
-        ├── landing-page.ejs
-        └── layout.ejs
                
 ## Overview
 
