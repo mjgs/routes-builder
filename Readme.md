@@ -21,7 +21,7 @@
     
   If you need to do some more setup once the routes have been created, listen for the 'setup-complete' event:
      
-    app.routes_builder.on('setup-complete', function(app) {
+    app.on('setup-complete', function(app) {
       // setup error handlers
     });   
       
