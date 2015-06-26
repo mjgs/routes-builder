@@ -47,10 +47,19 @@ _init = function (app, options) {
 
       // Setup the routes
       console.log('Running routes-definition script');
+
       _run_route_definition(options, function(err, map) {
-        if (err) { throw err; }
+        if (err) {
+          console.log('RoutesDefinitionError: ' + err);
+          app.emit('setup-failed');
+        }
         console.log('Running routes-build script');
-        _run_route_build(app, map, function(app) {
+
+        _run_route_build(app, map, function(err, app) {
+          if (err) {
+            console.log('RoutesBuildError: ' + err);
+            app.emit('setup-failed');
+          }
           console.log('Routes building complete');
           app.emit('setup-complete');
         });
@@ -60,9 +69,7 @@ _init = function (app, options) {
 };
 
 _load = function (folder, filename, cb) {
-  var
-    fn,
-    full_path;
+  var fn, full_path;
 
   if (typeof filename === 'function') { return cb(null, filename); }
   if (typeof filename !== 'string') { return cb(new Error("setup specifier must be of type string or function")); }
