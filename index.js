@@ -10,11 +10,9 @@ var
   debug  = require('debug')('routes-builder:index'),
   path   = require('path'),
   async  = require('async'),
-  events = require('events'),
 
   _init,
   _load,
-  _setupCompletionEvents,
   _run_route_definition,
   _run_route_build,
 
@@ -24,7 +22,6 @@ var
 
 //------------------- BEGIN UTILITY METHODS ------------------
 _init = function (app, options) {
-  _setupCompletionEvents(app);
   async.parallel([
       function(callback){
         // Load the route definition
@@ -49,10 +46,14 @@ _init = function (app, options) {
       _run_route_build = results[1];
 
       // Setup the routes
-      console.log('Running route-builder scripts');
+      console.log('Running routes-definition script');
       _run_route_definition(options, function(err, map) {
         if (err) { throw err; }
-        _run_route_build(app, map);
+        console.log('Running routes-build script');
+        _run_route_build(app, map, function(app) {
+          console.log('Routes building complete');
+          app.emit('setup-complete');
+        });
       });
     }
   );
@@ -69,7 +70,7 @@ _load = function (folder, filename, cb) {
   full_path = path.join(folder, filename + '.js');
 
   try {
-    console.log('Loading route-builder script: ' + full_path);
+    debug('Loading: ' + full_path);
     fn = require( full_path );
   }
   catch (err) {
@@ -77,17 +78,6 @@ _load = function (folder, filename, cb) {
   }
   if (typeof fn !== 'function') { return cb(new Error("Loaded setup file did not export a function")); }
   cb(null, fn);
-};
-
-_setupCompletionEvents = function (app) {
-  var routes_builder = new events.EventEmitter();
-  routes_builder.setupComplete = function (result) {
-    routes_builder.emit('setup-complete', result);
-  };
-  routes_builder.setupFailed = function (err) {
-    routes_builder.emit('setup-failed', err);
-  };
-  app.routes_builder = routes_builder;
 };
 //-------------------- END UTILITY METHODS -------------------
 
