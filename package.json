@@ -1,10 +1,11 @@
 {
   "name": "routes-builder",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Set up routes, middleware and handlers by droping them in a folder, view routes using the route table viewer",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/*.js"
+    "test": "mocha test/*.js",
+    "2npm": "publish"
   },
   "bin": {
     "routes-builder": "./bin/routes-builder-gen.js"
@@ -36,9 +37,10 @@
   ],
   "readmeFilename": "Readme.md",
   "engines": {
-    "node": ">=0.10.26 <=0.12.2"
+    "node": ">=0.10.26 <=0.12.5"
   },
   "devDependencies": {
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "publish": "^0.5.0"
   }
 }
