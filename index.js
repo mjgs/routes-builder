@@ -13,11 +13,11 @@ var
   express = require('express'),
   sprintf = require('sprintf-js').sprintf,
 
-  RoutesTable = require('./lib/types/RoutesTable'),
-  Route = require('./lib/types/Route'),
-  Middleware = require('./lib/types/Middleware'),
-  Handler = require('./lib/types/Handler'),
-  loader = require('./lib/loader'),
+  RoutesTable = require('./lib/RoutesTable'),
+  Route = require('./lib/Route'),
+  Middleware = require('./lib/Middleware'),
+  Handler = require('./lib/Handler'),
+  DirectoryLoader = require('./lib/DirectoryLoader'),
 
   _loader,
   _builder,
@@ -35,25 +35,26 @@ _loader = function(options, cb) {
   }
 
   debug('loading routes map');
+  var directory_loader = new DirectoryLoader();
 
   async.parallel([
     // Routes
     function(callback) {
-      loader.loadDirectoryOfObjects(options.dirs.routes, function(err, routes) {
+      directory_loader.loadDirectory(options.dirs.routes, function(err, routes) {
         if (err) callback(err, null);
         callback(null, routes);
       });
     },
     // Middleware
     function(callback) {
-      loader.loadDirectoryOfObjects(options.dirs.middleware, function(err, middleware) {
+      directory_loader.loadDirectory(options.dirs.middleware, function(err, middleware) {
         if (err) callback(err, null);
         callback(null, middleware);
       });
     },
     // Handlers
     function(callback) {
-      loader.loadDirectoryOfObjects(options.dirs.handlers, function(err, handlers) {
+      directory_loader.loadDirectory(options.dirs.handlers, function(err, handlers) {
         if (err) callback(err, null);
         callback(null, handlers);
       });
