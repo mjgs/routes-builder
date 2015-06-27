@@ -12,11 +12,11 @@ describe('DirectoryLoader', function() {
     assert.equal(typeof loader.loadDirectoryMap, 'function');
   });
 
-  it('should load a directory of objects', function () {
+  it.skip('should load a directory of objects', function () {
     assert.equal(true, false);
   });
 
-  it('should load a directory map of objects', function () {
+  it.skip('should load a directory map of objects', function () {
     assert.equal(true, false);
   });
 });

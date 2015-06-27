@@ -4,7 +4,7 @@
   "description": "Set up routes, middleware and handlers by droping them in a folder, view routes using the route table viewer",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/*.js",
+    "test": "mocha ./test/*.test.js ./test/**/*.test.js",
     "2npm": "publish"
   },
   "bin": {
