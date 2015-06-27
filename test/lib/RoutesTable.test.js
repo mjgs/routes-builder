@@ -1,7 +1,7 @@
 var assert = require('assert');
 var sinon = require('sinon');
 var path = require('path');
-var RoutesTable = require('../../lib/types/RoutesTable');
+var RoutesTable = require('../../lib/RoutesTable');
 
 describe('RoutesTable', function () {
   var app, options;
