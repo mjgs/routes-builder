@@ -14,9 +14,6 @@ var
   sprintf = require('sprintf-js').sprintf,
 
   RoutesTable = require('./lib/RoutesTable'),
-  Route = require('./lib/Route'),
-  Middleware = require('./lib/Middleware'),
-  Handler = require('./lib/Handler'),
   DirectoryLoader = require('./lib/DirectoryLoader'),
 
   _loader,
