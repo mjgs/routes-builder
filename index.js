@@ -8,93 +8,144 @@
 //---------------- BEGIN MODULE SCOPE VARIABLES --------------
 var
   debug  = require('debug')('routes-builder:index'),
-  path   = require('path'),
-  async  = require('async'),
+  path = require('path'),
+  async = require('async'),
+  express = require('express'),
+  sprintf = require('sprintf-js').sprintf,
 
-  _init,
-  _load,
-  _run_route_definition,
-  _run_route_build,
+  RoutesTable = require('./lib/types/RoutesTable'),
+  Route = require('./lib/types/Route'),
+  Middleware = require('./lib/types/Middleware'),
+  Handler = require('./lib/types/Handler'),
+  loader = require('./lib/loader'),
 
-  definitions_folder = path.join(__dirname, 'lib', 'route-definitions'),
-  builds_folder = path.join(__dirname, 'lib', 'route-builds');
+  _loader,
+  _builder,
+
+  routes_table;
 //---------------- END MODULE SCOPE VARIABLES ----------------
 
 //------------------- BEGIN UTILITY METHODS ------------------
-_init = function (app, options) {
+_loader = function(options, cb) {
+  var options, cb, map;
+
+  if (!cb && typeof options === 'function') {
+    cb = options;
+    options = {};
+  }
+
+  debug('loading routes map');
+
   async.parallel([
-      function(callback){
-        // Load the route definition
-        _load(definitions_folder, options.route_definition, function (err, fn) {
-          if (err) { throw err; }
-          options.route_definition = fn;
-          callback(null, options.route_definition);
-        });
-      },
-      function(callback){
-        // Load the build logic
-        _load(builds_folder, options.route_build, function (err, fn) {
-          if (err) { throw err; }
-          options.route_build = fn;
-          callback(null, options.route_build);
-        });
-      }
-    ],
-    function(err, results) {
-      if (err) { throw err; }      
-      _run_route_definition = results[0];
-      _run_route_build = results[1];
-
-      // Setup the routes
-      console.log('Running routes-definition script');
-
-      _run_route_definition(options, function(err, map) {
-        if (err) {
-          console.log('RoutesDefinitionError: ' + err);
-          app.emit('setup-failed');
-        }
-        console.log('Running routes-build script');
-
-        _run_route_build(app, map, function(err, app) {
-          if (err) {
-            console.log('RoutesBuildError: ' + err);
-            app.emit('setup-failed');
-          }
-          console.log('Routes building complete');
-          app.emit('setup-complete');
-        });
+    // Routes
+    function(callback) {
+      loader.loadDirectoryOfObjects(options.dirs.routes, function(err, routes) {
+        if (err) callback(err, null);
+        callback(null, routes);
+      });
+    },
+    // Middleware
+    function(callback) {
+      loader.loadDirectoryOfObjects(options.dirs.middleware, function(err, middleware) {
+        if (err) callback(err, null);
+        callback(null, middleware);
+      });
+    },
+    // Handlers
+    function(callback) {
+      loader.loadDirectoryOfObjects(options.dirs.handlers, function(err, handlers) {
+        if (err) callback(err, null);
+        callback(null, handlers);
       });
     }
-  );
+  ], function(err, results) {
+    if (err) { return cb(err, null); }
+    debug('routes map loaded');
+    map = {
+      routes: results[0],
+      middleware: results[1],
+      handlers: results[2]
+    };
+    cb(null, map);
+  });
+
 };
 
-_load = function (folder, filename, cb) {
-  var fn, full_path;
+_builder = function(app, map, cb) {
+  if (!map) cb(new Error('Routes map is empty'), null);
 
-  if (typeof filename === 'function') { return cb(null, filename); }
-  if (typeof filename !== 'string') { return cb(new Error("setup specifier must be of type string or function")); }
+  var app = app;
+  var map = map;
 
-  full_path = path.join(folder, filename + '.js');
+  // Iterate over the route definition files
+  Object.keys(map.routes).forEach(function(definition) {
+    var prefix                 = map.routes[definition].prefix || '/';
+    var default_middleware     = map.routes[definition].default_middleware;
+    var routes                 = map.routes[definition].routes;
+    var default_middleware_fns = routes_table.resolveMiddlewareFunctions(default_middleware);
+    var router                 = express.Router();
 
-  try {
-    debug('Loading: ' + full_path);
-    fn = require( full_path );
-  }
-  catch (err) {
-    return cb(err, null);
-  }
-  if (typeof fn !== 'function') { return cb(new Error("Loaded setup file did not export a function")); }
-  cb(null, fn);
+    debug(sprintf('%s router: created', definition));
+
+    // Add default middleware to the router
+    if (default_middleware_fns) {
+      router.use(default_middleware_fns);
+    }
+    debug(sprintf('%s router: added default middleware: %s ', definition, default_middleware || 'none'));
+
+    // Iterate over the routes in the definition file
+    routes.forEach(function(route) {
+      var method      = route[0];
+      var path        = route[1];
+      var middlewares = route[2];
+      var handler     = route[3];
+      var middleware_fns, handler_fn;
+
+      if ((path !== '/') && (path[path.length - 1] === '/' )) {
+        path = path.substr(0, path.length - 1);
+      }
+
+      middleware_fns = routes_table.resolveMiddlewareFunctions(middlewares);
+      handler_fn = routes_table.resolveHandlerFunction(handler);
+
+      // Add the route to the router
+      router[method](path, middleware_fns, handler_fn);
+      debug(sprintf('%s router: added route: %s %s -> %s -> %s', definition, method, path, middlewares.join(','), handler));
+    });
+
+    // Load the router onto the path prefix
+    app.use(prefix, router);
+    debug(sprintf('%s router: loaded onto path %s ', definition, prefix));
+  });
+  cb(null, app);
 };
 //-------------------- END UTILITY METHODS -------------------
 
 //-------------------- BEGIN MODULE EXPORT -------------------
 module.exports = function(app, options) {
   var options = options || {};
-  options.route_definition = options.route_definition || 'routes-builder.definition';
-  options.route_build = options.route_build || 'express.build';
+  options.dirs = options.dirs || {};
 
-  _init(app, options);
+  options.dirs.routes = path.join(process.cwd(), options.dirs.routes || 'routes');
+  options.dirs.middleware = path.join(process.cwd(), options.dirs.middleware || 'middleware');
+  options.dirs.handlers = path.join(process.cwd(), options.dirs.handlers || 'handlers');
+
+  options.loader = options.loader || _loader;
+  options.builder = options.builder || _builder;
+
+  routes_table = new RoutesTable(app, options);
+
+  routes_table.runRoutesPipeline(options, function(err, results) {
+    if (err) {
+      console.log('RoutesPipelineError: ' + err);
+      app.emit('setup-failed', err);
+    }
+    else {
+      console.log('Routes pipeline complete');
+      app.emit('setup-complete', results);
+    }
+  });
+
   return app;
 };
 //--------------------- END MODULE EXPORT --------------------
