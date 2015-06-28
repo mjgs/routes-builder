@@ -86,7 +86,7 @@ _builder = function(app, map, cb) {
     debug(sprintf('%s router: created', definition));
 
     // Add default middleware to the router
-    if (default_middleware_fns) {
+    if (default_middleware_fns && default_middleware_fns.length > 0) {
       router.use(default_middleware_fns);
     }
     debug(sprintf('%s router: added default middleware: %s ', definition, default_middleware || 'none'));
