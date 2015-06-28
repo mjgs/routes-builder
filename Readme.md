@@ -165,7 +165,7 @@
       'destroy': function ( req, res ) { res.send( 'This is the users.destroy handler' ); }
     };
   
-## Writing your own route loader and route builder functions
+## Writing your own loader and builder functions
 
   If you look in app.js you'll see the line:
   
