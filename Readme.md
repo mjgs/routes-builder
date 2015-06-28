@@ -1,7 +1,7 @@
 # Routes-Builder
 
-  Node.js module for route auto-creation, per-route middleware, and a development route table viewer. 
-  Route-Builder automatically sets up routes, middleware and handlers that you simply drop in.
+  Node.js module for route auto-creation, per-route middleware, and a development route table viewer.
+  Just drop your route definitions, middleware and handlers into a folder and they load on startup.
 
 ## Features
 
@@ -11,7 +11,7 @@
   * HTML page to view routes and per-route middleware during development
   * Flexible structure where you can use any folder naming and positioning you like
   * Simple command line tool to create new projects
-  * Defaults to using Express but you can write your own route definition and build functions
+  * Defaults to using Express but you can write your own route loading and building functions
     
 ## Getting started
   
@@ -78,14 +78,16 @@
       ]
     };
 
-  You define the routes at the same time as the middleware that will run when the route is requested. Add as many routes
-  in a definition file as you want.
+  You define the routes at the same time as the middleware that will run when the route is requested. 
+  Add as many routes in a definition file as you want.
   
-  A route table is created so you can easily view the routes during development by browsing to http://localhost:3000/routes-table:
+  A route table is created so you can easily view the routes during development by browsing to 
+  http://localhost:3000/routes-table:
 
   ![alt tag](https://raw.githubusercontent.com/mjgs/routes-builder/master/lib/html/routes-table.jpg)
 
-  The grouping is useful for feature development, all routes in the same route file will have that as the group name.
+  The grouping is useful for feature development, all routes in the same route file will have that 
+  as the group name.
   
   You define your handler functions in the usual way, homepage.js handler looks like this:
 
@@ -163,41 +165,40 @@
       'destroy': function ( req, res ) { res.send( 'This is the users.destroy handler' ); }
     };
   
-## Writing your own route definition and route build functions
+## Writing your own route loader and route builder functions
 
   If you look in app.js you'll see the line:
   
     var app = routes_builder(express());
     
-  That's where everything gets setup, and it happens in two steps:
+  That's where everything gets setup, the route building pipeline happens in 2 steps:
   
-  (1) route-definition function runs  (./lib/route-definitions)
+  (1) route-loader function runs (_loader in index.js)
   
-  (2) route-build function runs       (./lib/route-builds)
+  (2) route-builder function runs (_builder in index.js)
   
-  If you want to create your own then add them to the above folders and specify them as options 
-  without the .js in the filename like so:
+  If you want to create your own then specify them in the options object like so:
   
+    var custom_loader = function() { // add some route loading code here }
+    var custom_builder = function() { // add some route building code here }
+    var options = { loader: custom_loader, builder: custom_builder } 
+    
     var anotherWebServer = require('anotherWebServer');
-    var options = { route_definition: 'myFancyRoutes.definition', route_build: 'myDeploymentServer.build' } 
     var app = routes_builder(anotherWebServer(), options);  
 
   
-  The route-definition function can pass data to the route-build function, the default routes 
-  definition function uses a folder structure and route files to define the routes, but you could 
-  create the routes by loading them from a database if you wanted to. The default route build 
+  The route-loader function can pass data to the route-builder function, the default routes 
+  loader function uses a folder structure and route files to define the routes, but you could 
+  create the routes by loading them from a database if you wanted to. The default route builder 
   function creates routes for Express, but you could create your own function to create them 
   for any other web server.
-  
-  If you want the development route table viewer then look at these lines from the default definition function:
-  
-    if (process.env.NODE_ENV === 'development') {
-      routes_map = routes_table.addRouteTable(routes_map, '/', '/routes-table');
-    }
     
-  Then pass the route_map to your build function, of course your build function might require 
-  different data or data in a different structure. Make sure to write your definition and build 
-  functions to be compatible.
+  The route-loader function passes it's results as an object called a map to the builder function.
+  Have a look at RoutesTable.runRoutesPipeline for the pipeline logic and the default loader and 
+  builder utility functions are in index.js.
+    
+  Of course your builder function might require different data or data in a different structure. 
+  Make sure to write your route-loader and route-builder functions to be compatible.  
     
   If you want to create your own route table viewer then that's possible too since the route table 
   route returns json rather than html if you request it in the HTTP header.
@@ -257,5 +258,5 @@
   * Route table shows application level middleware
   * Sort route table by column
   * Re-load of assets without stop/starting app
-  * Write some example definition and build functions for other architectures
+  * Write some example route loader and route builder functions for other architectures
   * Write some unit tests                                                                                         
