@@ -83,7 +83,7 @@
   
   A route table is created so you can easily view the routes during development by browsing to http://localhost:3000/routes-table:
 
-  ![alt tag](https://raw.githubusercontent.com/mjgs/routes-builder/master/lib/routes-table.jpg)
+  ![alt tag](https://raw.githubusercontent.com/mjgs/routes-builder/master/lib/html/routes-table.jpg)
 
   The grouping is useful for feature development, all routes in the same route file will have that as the group name.
   
