@@ -180,15 +180,17 @@ _buildRouteFile = function() {
 
   var content = String()
     + "module.exports = {\n"
-    + "  prefix: '/" + configMap.routeName + "',\n"
+    + "  prefix: '',\n"
     + "  default_middleware: [ ],\n"
     + "  routes: [\n";
 
   len = _findLongestItems();
 
   routeFile.routes.forEach (function(route) {
+    route[1] = '/' + configMap.routeName + route[1];
+
     m_spaces = len.method_len - route[0].length + 1;
-    p_spaces = len.path_len - route[1].length + 1;
+    p_spaces = (len.path_len + configMap.routeName.length + 1) - route[1].length + 1;
     h_spaces = len.handler_len - route[3].length + 1;
 
     route[0] = _addQuotesAndSpaces(route[0], m_spaces);
