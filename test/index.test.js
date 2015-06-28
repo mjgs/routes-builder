@@ -62,5 +62,13 @@ describe('#index()', function() {
         .expect(404, done);
     });
   });
-
+  it('should load the route table in development mode', function (done) {
+    process.env.NODE_ENV = 'development';
+    app = routes_builder(app, options);
+    app.on('setup-complete', function () {
+      request(app)
+        .get('/routes-table')
+        .expect(200, done);
+    });
+  });
 });
