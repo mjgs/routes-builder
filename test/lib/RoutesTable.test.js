@@ -58,7 +58,7 @@ describe('RoutesTable', function () {
   });
 
   it('should run routes pipeline', function(done) {
-    var mock_map = { map: 'bogusmap' };
+    var mock_map = { handlers: {}, middleware: {}, routes: {} };
     options.loader = function(options, cb) {
       cb(null, mock_map);
     };
