@@ -22,7 +22,7 @@
 //--------------- BEGIN MODULE SCOPE VARIABLES ---------------
 var
   debug = require('debug')('routes-builder-gen'),
-  fs   = require('fs'),
+  fs    = require('fs'),
   path  = require('path'),
   argv  = require('minimist')(process.argv.slice(2)),
   clone = require('git-clone'),
@@ -34,11 +34,12 @@ var
   _printErrorAndExit,
   _createProject,
   _buildRoute,
-  _printRouteFile,
-  _printHandlersFile,
+  _buildRouteFile,
+  _buildHandlersFile,
   _findLongestItems,
   _addQuotesAndSpaces,
   _removeFormatRoutes,
+  _writeFile,
 
   routeFile = {
     prefix: '',
@@ -84,7 +85,7 @@ _printHelp = function() {
   console.log(' -d, --definition [name]   specify the route definition script (defaults to routes-builder)');
   console.log(' -c, --creation   [name]   specify the route creation script (defaults to express)');
   console.log('');
-  console.log(' -r, --routes     [name]   creates restful routes and handlers for copy paste');
+  console.log(' -r, --routes     [name]   creates restful routes and handlers');
   console.log(' -f, --format              flag to create restful routes including format routes');
   process.exit(0);
 };
@@ -150,18 +151,38 @@ _buildRoute = function() {
     routes[ctr][1] = routes[ctr][1];
     routes[ctr][3] = configMap.routeName.concat(routes[ctr][3]);
   }
-  _printRouteFile();
-  _printHandlersFile();
+
+  var filename = configMap.routeName + '.js';
+
+  var route_dir = path.join(process.cwd(), 'routes');
+  var route_file_contents = _buildRouteFile();
+
+  var handlers_dir = path.join(process.cwd(), 'handlers');
+  var handlers_file_contents = _buildHandlersFile();
+
+  _writeFile(route_dir, filename, route_file_contents, function(err, file_path1) {
+    if (err) { return console.log('Error creating file: ' + err.message); }
+
+    _writeFile(handlers_dir, filename, handlers_file_contents, function(err, file_path2) {
+      if (err) { return console.log('Error creating file: ' + err.message); }
+      console.log('');
+      console.log('Created Restful Routes:');
+      console.log('');
+      console.log('\033[36mCreated routes file: \033[39m' + file_path1);
+      console.log('\033[36mCreated handlers file: \033[39m' + file_path2);
+      console.log('');
+    });
+  });
 };
 
-_printRouteFile = function() {
+_buildRouteFile = function() {
   var len, m_spaces, p_spaces, h_spaces, r_string, ctr = 0;
 
-  console.log("\033[36m" + "[proj_dir]/routes/" + configMap.routeName + ".js:" + "\033[39m");
-  console.log("module.exports = {");
-  console.log("  prefix: '/" + configMap.routeName + "',");
-  console.log("  default_middleware: [ ],");
-  console.log("  routes: [");
+  var content = String()
+    + "module.exports = {\n"
+    + "  prefix: '/" + configMap.routeName + "',\n"
+    + "  default_middleware: [ ],\n"
+    + "  routes: [\n";
 
   len = _findLongestItems();
 
@@ -180,29 +201,30 @@ _printRouteFile = function() {
     }
 
     ctr++;
-    console.log(r_string);
+    content += r_string + "\n";
   });
-  console.log("  ]");
-  console.log("};");
+  content += "  ]\n";
+  content += "};";
+  return content;
 };
 
-_printHandlersFile = function() {
-  var fn, ctr = 0;
-  console.log("\033[36m" + "[proj_dir]/handlers/" + configMap.routeName + ".js:" + "\033[39m");
-  console.log("module.exports = {");
+_buildHandlersFile = function() {
+  var ctr = 0;
+
+  var content = String()
+    + "module.exports = {\n";
+
   handlers.forEach(function (handler) {
-    fn = "  '" + handler + "': function ( req, res ) { ";
-    fn += "res.send( 'This is the " + configMap.routeName + "." + handler + " handler' ); }";
+    content += "  '" + handler + "': function (req, res) { ";
+    content += "res.send('This is the " + configMap.routeName + "." + handler + " handler'); }";
 
     if (ctr !== handlers.length - 1) {
-      console.log(fn + ",");
-    }
-    else {
-      console.log(fn);
+      content += ",\n";
     }
     ctr++;
   });
-  console.log("};");
+  content += "\n};";
+  return content;
 };
 
 _findLongestItems = function() {
@@ -244,6 +266,23 @@ _removeFormatRoutes = function() {
     routes.push(routeFile.routes[ctr]);
   }
   routeFile.routes = routes;
+};
+
+_writeFile = function(directory, filename, content, cb) {
+  var file_path = path.join(directory, filename);
+  fs.stat(directory, function(err, stats) {
+    if (err) return cb(new Error('Directory does not exist: ' + directory), file_path);
+    if (stats.isDirectory()) {
+      fs.writeFile(file_path, content, function (err) {
+        if (err) return cb(err, file_path);
+        cb(null, file_path);
+      });
+    }
+    else {
+      cb(new Error('Directory does not exist: ' + directory), file_path);
+    }
+  });
+
 };
 //-------------------- END UTILITY METHODS -------------------
 
