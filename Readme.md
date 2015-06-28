@@ -179,8 +179,8 @@
   
   If you want to create your own then specify them in the options object like so:
   
-    var custom_loader = function() { // add some route loading code here }
-    var custom_builder = function() { // add some route building code here }
+    var custom_loader = function(options, cb) { // add some route loading code here }
+    var custom_builder = function(app, map, cb) { // add some route building code here }
     var options = { loader: custom_loader, builder: custom_builder } 
     
     var anotherWebServer = require('anotherWebServer');
