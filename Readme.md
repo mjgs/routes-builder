@@ -13,7 +13,7 @@
   * Simple command line tool to create new projects
   * Defaults to using Express but you can write your own route loading and building functions
     
-## Getting started
+## Getting Started
   
     var express = require('express');
     var routes_builder = require('routes_builder');
@@ -27,7 +27,7 @@
       
   The best way to get started is to install the command line tool.
 
-## Installing the command line tool
+## Installing the Command Line Tool
 
   To install routes-builder globally use npm:
 
@@ -125,47 +125,18 @@
   Remember to always put your next() in the right place, if you find your handlers are 
   getting run several times that's probably the reason.
       
-## Creating Restful routes with command line tool
+## Creating Restful Routes
 
-  Let's say you wanted to create some resful routes for users, then just run the command line 
-  tool and copy and paste the output into a routes file and a handler file:
+  Creating restful routes using the command line tool is easy:
   
-    $ routes-builder -f -u users
-      
-    [proj_dir]/routes/users.js:
-    module.exports = {
-      prefix: '/users',
-      default_middleware: [ ],
-      routes: [
-        [ 'get'    , ''                 , [ ] , 'users.index'   ],
-        [ 'get'    , '.format'          , [ ] , 'users.index'   ],
-        [ 'get'    , '/new'             , [ ] , 'users.new'     ],
-        [ 'get'    , '/new.format'      , [ ] , 'users.new'     ],
-        [ 'post'   , ''                 , [ ] , 'users.create'  ],
-        [ 'post'   , '.format'          , [ ] , 'users.create'  ],
-        [ 'get'    , '/:id'             , [ ] , 'users.show'    ],
-        [ 'get'    , '/:id.format'      , [ ] , 'users.show'    ],
-        [ 'get'    , '/:id/edit'        , [ ] , 'users.edit'    ],
-        [ 'get'    , '/:id/edit.format' , [ ] , 'users.edit'    ],
-        [ 'post'   , '/:id'             , [ ] , 'users.update'  ],
-        [ 'post'   , '/:id.format'      , [ ] , 'users.update'  ],
-        [ 'delete' , '/:id'             , [ ] , 'users.destroy' ],
-        [ 'delete' , '/:id.format'      , [ ] , 'users.destroy' ]
-      ]
-    };
+    $ routes-builder -f -r users
     
-    [proj_dir]/handlers/users.js:
-    module.exports = {
-      'index': function ( req, res ) { res.send( 'This is the users.index handler' ); },
-      'new': function ( req, res ) { res.send( 'This is the users.new handler' ); },
-      'create': function ( req, res ) { res.send( 'This is the users.create handler' ); },
-      'show': function ( req, res ) { res.send( 'This is the users.show handler' ); },
-      'edit': function ( req, res ) { res.send( 'This is the users.edit handler' ); },
-      'update': function ( req, res ) { res.send( 'This is the users.update handler' ); },
-      'destroy': function ( req, res ) { res.send( 'This is the users.destroy handler' ); }
-    };
+    Created Restful Routes:
+    
+    Routes file: [project_directory]/routes/users.js
+    Handlers file: [project_directory]/handlers/users.js
   
-## Writing your own loader and builder functions
+## Writing Custom Loader and Builder Functions
 
   If you look in app.js you'll see the line:
   
@@ -215,14 +186,14 @@
   and you'll learn techniques and patterns that are useful for Node.js app
   development.  
   
-## Specifying different folder names
+## Specifying Different Folder Names
   
   If you want to use different names than the defaults then pass them in the options:
   
     var options = { routes: 'paths', middleware: 'middlewares', handlers: 'controllers' } 
     var app = routes_builder(express(), options);
   
-## Single file apps
+## Single File Apps
 
   For small apps it's convenient to be able to have all the pieces of the app in the same app.js file
   rather than spread out in different folders. You can specify any/all of the routes, middleware
@@ -258,7 +229,7 @@
     var app = routes_builder(express(), options);  
 
 
-## Possible additions
+## Possible Additions
 
   * Route table shows some stats (total routes, total GETs/PUTs/etc)
   * Route table shows application level middleware
