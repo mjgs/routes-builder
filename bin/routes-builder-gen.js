@@ -168,8 +168,8 @@ _buildRoute = function() {
       console.log('');
       console.log('Created Restful Routes:');
       console.log('');
-      console.log('\033[36mCreated routes file: \033[39m' + file_path1);
-      console.log('\033[36mCreated handlers file: \033[39m' + file_path2);
+      console.log('\033[36mRoutes file: \033[39m' + '[project_directory]/routes/' + filename);
+      console.log('\033[36mHandlers file: \033[39m' + '[project_directory]/handlers/' + filename);
       console.log('');
     });
   });
