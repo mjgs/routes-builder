@@ -184,7 +184,13 @@
   
   If you want to use different names than the defaults then pass them in the options:
   
-    var options = { routes: 'paths', middleware: 'middlewares', handlers: 'controllers' } 
+    var options = { 
+      dirs: {
+        routes: 'paths', 
+        middleware: 'middlewares', 
+        handlers: 'controllers' 
+      }
+    } 
     var app = routes_builder(express(), options);
   
 ## Single File Apps
