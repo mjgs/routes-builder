@@ -182,13 +182,13 @@
   
 ## Specifying Different Folder Names
   
-  If you want to use different names than the defaults then pass them in the options:
+  If you want to use different names than the defaults then pass them in as absolute paths in the options:
   
     var options = { 
       dirs: {
-        routes: 'paths', 
-        middleware: 'middlewares', 
-        handlers: 'controllers' 
+        routes: '/projects/testApp/paths', 
+        middleware: '/projects/testApp/middlewares', 
+        handlers: '/projects/testApp/controllers' 
       }
     } 
     var app = routes_builder(express(), options);

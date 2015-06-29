@@ -124,9 +124,9 @@ module.exports = function(app, options) {
   var options = options || {};
   options.dirs = options.dirs || {};
 
-  options.dirs.routes = path.join(process.cwd(), options.dirs.routes || 'routes');
-  options.dirs.middleware = path.join(process.cwd(), options.dirs.middleware || 'middleware');
-  options.dirs.handlers = path.join(process.cwd(), options.dirs.handlers || 'handlers');
+  options.dirs.routes = options.dirs.routes || path.join(process.cwd(), 'routes');
+  options.dirs.middleware = options.dirs.middleware || path.join(process.cwd(), 'middleware');
+  options.dirs.handlers = options.dirs.handlers || path.join(process.cwd(), 'handlers');
 
   options.loader = options.loader || _loader;
   options.builder = options.builder || _builder;
