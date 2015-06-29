@@ -1,6 +1,6 @@
 {
   "name": "routes-builder",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "description": "Set up routes, middleware and handlers by droping them in a folder, view routes using the route table viewer",
   "main": "index.js",
   "scripts": {

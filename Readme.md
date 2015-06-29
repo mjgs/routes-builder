@@ -178,13 +178,7 @@
   Make sure to write your route-loader and route-builder functions to be compatible.  
     
   If you want to create your own route table viewer then that's possible too since the route table 
-  route returns json rather than html if you request it in the HTTP header.
-  
-  Routes-Builder is a good place to start building web applications using Node and Express.
-  It does a few key things that will enable you to get up and running
-  quickly, it's simple enough that you don't get confused by too many layers,
-  and you'll learn techniques and patterns that are useful for Node.js app
-  development.  
+  route returns json rather than html if you request it in the HTTP header.  
   
 ## Specifying Different Folder Names
   
@@ -228,7 +222,14 @@
     
     var app = routes_builder(express(), options);  
 
-
+## Summary
+  
+  Routes-Builder is a good place to start building web applications using Node and Express.
+  It does a few key things that will enable you to get up and running
+  quickly, it's simple enough that you don't get confused by too many layers,
+  and you'll learn techniques and patterns that are useful for Node.js app
+  development.
+  
 ## Possible Additions
 
   * Route table shows some stats (total routes, total GETs/PUTs/etc)
