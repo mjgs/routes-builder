@@ -240,7 +240,7 @@
 
   * Routes table shows some stats (total routes, total GETs/PUTs/etc)
   * Routes table shows application level middleware
-  * Routes table feature to create routes & restful routes
+  * Routes table feature to create and edit routes & restful routes
   * Routes table sort by column
   * Re-load of assets without stop/starting app
   * Write some example route loader and route builder functions for other architectures
