@@ -108,7 +108,7 @@
         console.log("This is middleware1");
         next();
       },
-      middleware2: function ( req, res, next ) {
+      middleware2: function (req, res, next) {
         console.log("This is middleware2");
         next();
       },
