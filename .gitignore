@@ -20,6 +20,8 @@ npm-debug.log
 
 .nvmrc
 
+coverage
+
 ########################
 # misc / editors
 ########################
