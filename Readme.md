@@ -42,7 +42,6 @@
     myNewProject
     |
     |-app.js       - file that contains the main application
-    |-bin          - folder that contains the runnable www file
     |-handlers     - folder for route handler functions
     |-lib          - folder for other functionality modules you create
     |-middleware   - folder for per route middleware functions
