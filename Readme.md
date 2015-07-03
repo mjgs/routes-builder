@@ -69,7 +69,8 @@
 
   The general idea is that you define the routes separate from the code that handles the route request. 
   
-  Route definition files are simple javascript objects.
+  Route definition files are node modules that export a javascript object that have optional prefix, 
+  default_middleware and routes properties.
   
   routes/landing-pages.js:
     
@@ -107,7 +108,7 @@
       }
     };
     
-  Middleware modules also export a javascript objects containing functions, you can have several in
+  Middleware modules also export a javascript object containing functions, you can have several in
   one file and/or have many files.
   
   middleware/middleware.js:
