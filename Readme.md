@@ -66,14 +66,18 @@
 
   The general idea is that you define the routes separate from the code that handles the route request. 
   
-  Route definition files are simple javascript objects:
+  Route definition files are simple javascript objects.
+  
+  routes/landing-pages.js:
     
     module.exports = {
-      prefix: '/some/path/on/the/site',
+      prefix: '/landing-pages',
       default_middleware: [ 'middleware.middleware1', 'middleware.middleware2' ],
       routes: [
-        [ 'get' , '/landing-page',   [ 'middleware.middleware3', 'middleware.middleware4' ],  'landing-page.mainPage' ]
-        ...
+        [ 'get' , '/'                    , [ 'middleware.middleware3', 'middleware.middleware4' ], 'landing-pages.index'           ],
+        [ 'get' , '/first-landing-page'  , [ 'middleware.middleware3', 'middleware.middleware4' ], 'landing-pages.first_lp'        ],
+        [ 'get' , '/another-landing-page', [ 'middleware.middleware3', 'middleware.middleware4' ], 'landing-pages.another_lp'      ],
+        [ 'get' , '/online-services'     , [ ]                                                   , 'landing-pages.online_services' ]
       ]
     };
 
@@ -88,7 +92,10 @@
   The grouping is useful for feature development, all routes in the same route file will have that 
   as the group name.
   
-  You define your handler functions in the usual way, homepage.js handler looks like this:
+  Handler modules export a javascript object containing the handler functions. You can have as many 
+  handler functions in a file as you want.
+  
+  handlers/homepage.js:
 
     module.exports = {
       mainPage: function (req, res) {
@@ -97,10 +104,10 @@
       }
     };
     
-  You can have as many handler functions in a file as you want.
-
-  Middleware are defined as regular javascript objects, you can have several in
-  one file and/or have many files, middleware.js looks like this:
+  Middleware modules also export a javascript objects containing functions, you can have several in
+  one file and/or have many files.
+  
+  middleware/middleware.js:
 
     module.exports = {
       middleware1: function (req, res, next) {
