@@ -55,6 +55,9 @@
       $ cd myNewProject && npm install (install dependencies)
       $ export NODE_ENV=development DEBUG=routes-builder:* (export environment variables)
       $ npm start (or if you prefer node app.js)
+   
+  The command line tool uses the [routes-builder-demo-project](https://github.com/mjgs/routes-builder-demo-project) 
+  to create a new project so you'll need an internet connection to create new projects successfully.
                
 ## Overview
 
