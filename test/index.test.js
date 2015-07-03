@@ -4,11 +4,12 @@ var request = require('supertest');
 var path = require('path');
 var logger = require('morgan');
 var ejs_locals = require('ejs-locals');
+var rewire = require('rewire');
 
 describe('#index()', function() {
   var app, routes_builder, options = {};
   beforeEach(function() {
-    routes_builder = require('../index');
+    routes_builder = rewire('../index');
     app = express();
     var base_path = path.join(process.cwd(), 'lib', 'test-data');
     app.use(logger('dev'));
@@ -16,9 +17,9 @@ describe('#index()', function() {
     app.set('view engine', 'ejs');
     app.engine('ejs', ejs_locals);
     options.dirs = {};
-    options.dirs.routes = path.join(process.cwd(), 'lib', 'test-data', 'routes');
-    options.dirs.middleware = path.join(process.cwd(), 'lib', 'test-data', 'middleware');
-    options.dirs.handlers = path.join(process.cwd(), 'lib', 'test-data', 'handlers');
+    //options.dirs.routes = path.join(process.cwd(), 'lib', 'test-data', 'routes');
+    //options.dirs.middleware = path.join(process.cwd(), 'lib', 'test-data', 'middleware');
+    //options.dirs.handlers = path.join(process.cwd(), 'lib', 'test-data', 'handlers');
   });
   afterEach(function() {
     delete routes_builder;
@@ -34,35 +35,54 @@ describe('#index()', function() {
     assert.equal(typeof app, 'function');
   });
   it('should cause app to emit setup-failed event', function (done) {
-    app = routes_builder(express());
-    app.on('setup-failed', function (err) {
-      assert.equal(err.code, 'ENOENT');
+    var RoutesTableMock = function() {};
+    RoutesTableMock.prototype.runRoutesPipeline = function(options, cb) {
+      cb(new Error('This is the setup failed error'));
+    };
+    var revert = routes_builder.__set__('RoutesTable', RoutesTableMock);
+    app.on('setup-failed', function(err) {
+      assert.equal(err.message, 'This is the setup failed error');
+      revert();
       done();
     });
+    app = routes_builder(app, options);
   });
   it('should cause app to emit setup-complete event', function (done) {
-    app = routes_builder(app, options);
+    var RoutesTableMock = function() {};
+    RoutesTableMock.prototype.runRoutesPipeline = function(options, cb) {
+      cb(null, { answer: 42 });
+    };
+    var revert = routes_builder.__set__('RoutesTable', RoutesTableMock);
     app.on('setup-complete', function(results) {
-      assert.equal(results.length, 3);
-      assert.equal(typeof results[0].routes, 'object');
-      assert.equal(typeof results[0].middleware, 'object');
-      assert.equal(typeof results[0].handlers, 'object');
-      assert.equal(typeof results[1], 'object');
-      assert.equal(typeof results[2], 'function');
-      request(results[2])
-        .get('/')
-        .expect(200, done);
+      assert.equal(results.answer, 42);
+      revert();
+      done();
     });
+    app = routes_builder(app, options);
   });
   it('should 404 on non existent route', function (done) {
-    app = routes_builder(app, options);
+    options = {
+      dirs: {
+        routes: {},
+        middleware: {},
+        handlers: {}
+      }
+    };
     app.on('setup-complete', function () {
       request(app)
         .get('/routedoesnotexist')
         .expect(404, done);
     });
+    app = routes_builder(app, options);
   });
   it('should load the route table in development mode', function (done) {
+    options = {
+      dirs: {
+        routes: {},
+        middleware: {},
+        handlers: {}
+      }
+    };
     process.env.NODE_ENV = 'development';
     app = routes_builder(app, options);
     app.on('setup-complete', function () {
