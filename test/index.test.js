@@ -17,9 +17,6 @@ describe('#index()', function() {
     app.set('view engine', 'ejs');
     app.engine('ejs', ejs_locals);
     options.dirs = {};
-    //options.dirs.routes = path.join(process.cwd(), 'lib', 'test-data', 'routes');
-    //options.dirs.middleware = path.join(process.cwd(), 'lib', 'test-data', 'middleware');
-    //options.dirs.handlers = path.join(process.cwd(), 'lib', 'test-data', 'handlers');
   });
   afterEach(function() {
     delete routes_builder;
