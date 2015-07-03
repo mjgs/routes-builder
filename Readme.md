@@ -209,28 +209,30 @@
   and handlers in a javascript object and pass that in the options object like so:
   
     var options = {
-      routes: {
-        'landing-pages': {
-          prefix: '/landing-pages',
-          default_middleware: [ 'middleware.middleware1', 'middleware.middleware2' ],
-          routes: [
-            [ 'get' , '/first-page',   [ 'middleware.middleware3', 'middleware.middleware4' ],  'handlers.first_handler'  ],
-            [ 'get' , '/second-page',  [ 'middleware.middleware3', 'middleware.middleware4' ],  'handlers.second_handler' ]
-          ]
-        }
-      },
-      middleware: {
-        'middleware': {
-          middleware1: function (req, res, next) { console.log("This is middleware1"); next(); },
-          middleware2: function (req, res, next) { console.log("This is middleware2"); next(); },
-          middleware3: function (req, res, next) { console.log("This is middleware3"); next(); },
-          middleware4: function (req, res, next) { console.log("This is middleware4"); next(); }
-        }
-      },
-      handlers: {
-        'handlers': {
-          first_handler: function (req, res) { console.log('This is the first-page handler'); return res.send('This is the first-page handler'); },
-          second_handler: function (req, res) { console.log('This is the second-page handler'); return res.send('This is the second-page handler'); }
+      dirs: {
+        routes: {
+          'landing-pages': {
+            prefix: '/landing-pages',
+            default_middleware: [ 'middleware.middleware1', 'middleware.middleware2' ],
+            routes: [
+              [ 'get' , '/first-page',   [ 'middleware.middleware3', 'middleware.middleware4' ],  'handlers.first_handler'  ],
+              [ 'get' , '/second-page',  [ 'middleware.middleware3', 'middleware.middleware4' ],  'handlers.second_handler' ]
+            ]
+          }
+        },
+        middleware: {
+          'middleware': {
+            middleware1: function (req, res, next) { console.log("This is middleware1"); next(); },
+            middleware2: function (req, res, next) { console.log("This is middleware2"); next(); },
+            middleware3: function (req, res, next) { console.log("This is middleware3"); next(); },
+            middleware4: function (req, res, next) { console.log("This is middleware4"); next(); }
+          }
+        },
+        handlers: {
+          'handlers': {
+            first_handler: function (req, res) { console.log('This is the first-page handler'); return res.send('This is the first-page handler'); },
+            second_handler: function (req, res) { console.log('This is the second-page handler'); return res.send('This is the second-page handler'); }
+          }
         }
       }
     };
