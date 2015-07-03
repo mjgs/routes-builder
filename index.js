@@ -117,6 +117,7 @@ _builder = function(app, map, cb) {
   });
   cb(null, app);
 };
+
 //-------------------- END UTILITY METHODS -------------------
 
 //-------------------- BEGIN MODULE EXPORT -------------------
