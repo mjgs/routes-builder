@@ -1,6 +1,7 @@
 var assert = require('assert');
 var path = require('path');
-var DirectoryLoader = require('../../lib/DirectoryLoader');
+var rewire = require('rewire');
+var DirectoryLoader = rewire('../../lib/DirectoryLoader');
 
 describe('DirectoryLoader', function() {
   it('should return a function', function () {
@@ -23,20 +24,45 @@ describe('DirectoryLoader', function() {
   });
 
   it('should load a directory map of objects', function () {
+    var readdirMock = {
+      read: function(dir, glob, options, cb) {
+        cb(null, [
+          'file1.js',
+          'file2.js',
+          'file3.js',
+          'file4.js',
+          'file5.js'
+        ]);
+      }
+    };
+    DirectoryLoader.__set__('readdir', readdirMock);
+    var requireMock = function (name) {
+      if ((name.indexOf('file1.js')) ||
+          (name.indexOf('file2.js')) ||
+          (name.indexOf('file3.js')) ||
+          (name.indexOf('file4.js')) ||
+          (name.indexOf('file5.js'))) {
+        return {};
+      }
+      else {
+        require(name);
+      }
+    };
+    DirectoryLoader.__set__('require', requireMock);
+
     var dir_map = {
-      routes    : path.join(__dirname, '..', '..', 'lib', 'test-data', 'routes'),
-      middleware: path.join(__dirname, '..', '..', 'lib', 'test-data', 'middleware'),
-      handlers  : path.join(__dirname, '..', '..', 'lib', 'test-data', 'handlers')
+      routes    : '/bogus/path/1',
+      middleware: '/bogus/path/2',
+      handlers  : '/bogus/path/3'
     };
     var loader = new DirectoryLoader();
     loader.loadDirectoryMap(dir_map, function(err, results) {
       assert.equal(err, null);
-      assert.equal(typeof results.routes, 'object');
-      assert.equal(results.routes.length, 2);
-      assert.equal(typeof results.middleware, 'middleware');
-      assert.equal(results.middleware.length, 1);
-      assert.equal(typeof results.handlers, 'handlers');
-      assert.equal(results.handlers.length, 2);
+      assert.deepEqual(results, {
+        routes: { file1: {}, file2: {}, file3: {}, file4: {}, file5: {} },
+        middleware: { file1: {}, file2: {}, file3: {}, file4: {}, file5: {} },
+        handlers: { file1: {}, file2: {}, file3: {}, file4: {}, file5: {} }
+      });
     });
   });
 });
