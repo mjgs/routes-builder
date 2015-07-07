@@ -67,10 +67,11 @@
     |       /     -->  middleware1 --> middleware2 ... -->  homepage.mainPage  |
      --------------------------------------------------------------------------
 
-  The general idea is that you define the routes separate from the code that handles the route request. 
+  The route definition is separate from the functions that execute during the request. Each route in the definition 
+  lists the middleware functions and the handler function that will run when the route is requested.
   
-  Route definition files are node modules that export a javascript object that have optional prefix, 
-  default_middleware and routes properties.
+  Route definition files are node modules that export a javascript object that have an optional prefix, 
+  default_middleware and routes properties. Add as many routes in a definition file as you want.
   
   routes/landing-pages.js:
     
@@ -84,10 +85,11 @@
         [ 'get' , '/online-services'     , [ ]                                                   , 'landing-pages.online_services' ]
       ]
     };
-
-  You define the routes at the same time as the middleware that will run when the route is requested. 
-  Add as many routes in a definition file as you want.
   
+  When a get request is done on /landing-pages/first-landing-page, the 'middleware.middleware1' and 
+  'middleware.middleware2' functions will be executed, followed by the per route middleware 'middleware.middleware3' 
+  and 'middleware.middleware4', and finally the request will be handled by the landing-pages.first_lp function. 
+    
   A route table is created so you can easily view the routes during development by browsing to 
   http://localhost:3000/routes-table:
 
