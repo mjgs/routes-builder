@@ -9,9 +9,10 @@
   * Auto-loading of route definitions, route middleware and route handlers
   * Auto-creation of routes
   * HTML page to view routes and per-route middleware during development
-  * Flexible structure where you can use any folder naming and positioning you like
+  * Flexible folder naming and positioning
   * Simple command line tool to create new projects
-  * Defaults to using Express but you can write your own route loading and building functions
+  * Platform agnostic with customisable route loading and building functions (defaults to using Express)
+  * Single file apps for convenience in small projects
     
 ## Getting Started
   
@@ -90,7 +91,7 @@
   'middleware.middleware2' functions will be executed, followed by the per route middleware 'middleware.middleware3' 
   and 'middleware.middleware4', and finally the request will be handled by the landing-pages.first_lp function. 
     
-  A route table is created so you can easily view the routes during development by browsing to 
+  A route table is created to easily view the routes during development by browsing to 
   http://localhost:3000/routes-table:
 
   ![alt tag](https://raw.githubusercontent.com/mjgs/routes-builder/master/lib/html/routes-table.jpg)
@@ -98,8 +99,8 @@
   The grouping is useful for feature development, all routes in the same route file will have that 
   as the group name.
   
-  Handler modules export a javascript object containing the handler functions. You can have as many 
-  handler functions in a file as you want.
+  Handler modules export a javascript object containing the handler functions, as many handler functions in a 
+  file as you want.
   
   handlers/homepage.js:
 
@@ -110,8 +111,7 @@
       }
     };
     
-  Middleware modules also export a javascript object containing functions, you can have several in
-  one file and/or have many files.
+  Middleware modules also export a javascript object containing functions, several in one file and/or several files.
   
   middleware/middleware.js:
 
@@ -176,7 +176,7 @@
     var app = routes_builder(anotherWebServer(), options);  
 
   
-  The route-loader function can pass data to the route-builder function, the default routes 
+  The route-loader function passes data to the route-builder function, the default routes 
   loader function uses a folder structure and route files to define the routes, but you could 
   create the routes by loading them from a database if you wanted to. The default route builder 
   function creates routes for Express, but you could create your own function to create them 
@@ -208,7 +208,7 @@
 ## Single File Apps
 
   For small apps it's convenient to be able to have all the pieces of the app in the same app.js file
-  rather than spread out in different folders. You can specify any/all of the routes, middleware
+  rather than spread out in different folders. Specify any/all of the routes, middleware
   and handlers in a javascript object and pass that in the options object like so:
   
     var options = {
